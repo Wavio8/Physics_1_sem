@@ -10,13 +10,12 @@ void mass_change(int &m_oil, int v_oil, int &m_rocket) {
     m_rocket -= v_oil;
 }
 
-void radius_change(double &radius, double x, double y) {
-    radius = sqrt(pow(x, 2) + pow(y, 2));
+void radius_change(double &radius, double x, double y, double R_EARTH) {
+    radius = sqrt(pow(x, 2) + pow(y, 2)) + R_EARTH;
 }
 
 void gravity_attraction_change(int m_earth, int m_rocket, double &gravity_pull, double radius) {
-    if (radius != 0)
-        gravity_pull = G * m_earth * m_rocket / pow(radius, 2);
+    gravity_pull = G * m_earth / pow(radius, 2) * m_rocket;
 }
 
 void speed_change(double &v_x, double &v_y, double gravity_pull, double angle, int m_rocket, int v_gas, int v_oil) {
@@ -40,7 +39,8 @@ int main() {
     int m_oil;
     int V_GAS;
     int V_OIL;
-    int M_EARTH;
+    long long M_EARTH;
+    double R_EARTH = 637.1;
     cin >> angle;
     cin >> m_rocket;
     cin >> m_oil;
@@ -67,7 +67,7 @@ int main() {
                 break;
             time++;
             mass_change(m_oil, V_OIL, m_rocket);
-            radius_change(radius, x, y);
+            radius_change(radius, x, y, R_EARTH);
             gravity_attraction_change(M_EARTH, m_rocket, gravity_pull, radius);
             speed_change(v_x, v_y, gravity_pull, angle, m_rocket, V_GAS, V_OIL);
             angle_change(angle, v_x, v_y);
